@@ -13,7 +13,7 @@ const AdminUserListPage = () => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(
-        "http://localhost:8080/api/admin/v1/admin-users",
+        `${import.meta.env.VITE_BASE_URL}/admin-users`,
         {
           method: "GET",
           headers: {
@@ -38,7 +38,7 @@ const AdminUserListPage = () => {
   const handleToggleActive = async (id, currentActive) => {
     try {
       const token = localStorage.getItem("authToken");
-      await fetch(`http://localhost:8080/api/admin/v1/admin-users/${id}`, {
+      await fetch(`${import.meta.env.VITE_BASE_URL}/admin-users/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -57,7 +57,7 @@ const AdminUserListPage = () => {
       try {
         const token = localStorage.getItem("authToken");
         await fetch(
-          `http://localhost:8080/api/admin/v1/admin-users/${id}/reset-password`,
+          `${import.meta.env.VITE_BASE_URL}/admin-users/${id}/reset-password`,
           {
             method: "POST",
             headers: {

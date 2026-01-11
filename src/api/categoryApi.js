@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = `${import.meta.env.VITE_BASE_URL}`;
 
 async function request(method, url, body) {
   const token = localStorage.getItem("admin_token");
@@ -30,11 +30,11 @@ async function request(method, url, body) {
 }
 
 const categoryApi = {
-  getCategories: () => request("GET", "/api/admin/v1/categories"),
-  getCategoryById: (id) => request("GET", `/api/admin/v1/categories/${id}`), // Ensure this is a GET request
-  createCategory: (payload) => request("POST", "/api/admin/v1/categories", payload),
-  updateCategory: (id, payload) => request("PUT", `/api/admin/v1/categories/${id}`, payload),
-  deleteCategory: (id) => request("DELETE", `/api/admin/v1/categories/${id}`)
+  getCategories: () => request("GET", "/categories"),
+  getCategoryById: (id) => request("GET", `/categories/${id}`), // Ensure this is a GET request
+  createCategory: (payload) => request("POST", "/categories", payload),
+  updateCategory: (id, payload) => request("PUT", `/categories/${id}`, payload),
+  deleteCategory: (id) => request("DELETE", `/categories/${id}`)
 };
 
 export default categoryApi;

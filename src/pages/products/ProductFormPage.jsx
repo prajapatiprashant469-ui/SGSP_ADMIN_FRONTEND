@@ -122,7 +122,7 @@ const ProductFormPage = () => {
   const handleDeleteImage = async (imageId) => {
     if (window.confirm("Delete this image?")) {
       await fetch(
-        `http://localhost:8080/api/admin/v1/products/${id}/images/${imageId}`,
+        `${import.meta.env.VITE_BASE_URL}/products/${id}/images/${imageId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
@@ -146,8 +146,8 @@ const ProductFormPage = () => {
       const token = localStorage.getItem("authToken");
       const method = isEditMode ? "PUT" : "POST";
       const url = isEditMode
-        ? `http://localhost:8080/api/admin/v1/products/${id}`
-        : "http://localhost:8080/api/admin/v1/products";
+        ? `${import.meta.env.VITE_BASE_URL}/products/${id}`
+        : `${import.meta.env.VITE_BASE_URL}/products`;
 
       const response = await fetch(url, {
         method,
@@ -168,7 +168,7 @@ const ProductFormPage = () => {
         const formData = new FormData();
         newImages.forEach((file) => formData.append("files[]", file));
         await fetch(
-          `http://localhost:8080/api/admin/v1/products/${productId}/images`,
+          `${import.meta.env.VITE_BASE_URL}/products/${productId}/images`,
           {
             method: "POST",
             headers: { Authorization: `Bearer ${token}` },

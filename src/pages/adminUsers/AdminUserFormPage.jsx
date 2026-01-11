@@ -53,8 +53,8 @@ const AdminUserFormPage = () => {
     try {
       const token = localStorage.getItem("authToken");
       const url = isEditMode
-        ? `http://localhost:8080/api/admin/v1/admin-users/${id}`
-        : "http://localhost:8080/api/admin/v1/admin-users";
+        ? `${import.meta.env.VITE_BASE_URL}/admin-users/${id}`
+        : `${import.meta.env.VITE_BASE_URL}/admin-users`;
       const method = isEditMode ? "PUT" : "POST";
 
       await fetch(url, {

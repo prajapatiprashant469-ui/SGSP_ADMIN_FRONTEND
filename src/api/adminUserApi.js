@@ -1,5 +1,5 @@
 
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = `${import.meta.env.VITE_BASE_URL}`;
 
 async function request(method, url, body) {
   const token = localStorage.getItem("admin_token");
@@ -27,27 +27,27 @@ async function request(method, url, body) {
 }
 
 export function getAdminUsers() {
-  return request("GET", "/api/admin/v1/admin-users");
+  return request("GET", "/admin-users");
 }
 
 export function getAdminUserById(id) {
-  return request("GET", `/api/admin/v1/admin-users/${id}`);
+  return request("GET", `/admin-users/${id}`);
 }
 
 export function createAdminUser(payload) {
-  return request("POST", "/api/admin/v1/admin-users", payload);
+  return request("POST", "/admin-users", payload);
 }
 
 export function updateAdminUser(id, payload) {
-  return request("PUT", `/api/admin/v1/admin-users/${id}`, payload);
+  return request("PUT", `/admin-users/${id}`, payload);
 }
 
 export function toggleAdminActive(id, active) {
-  return request("PUT", `/api/admin/v1/admin-users/${id}`, { active });
+  return request("PUT", `/admin-users/${id}`, { active });
 }
 
 export function resetAdminPassword(id) {
-  return request("POST", `/api/admin/v1/admin-users/${id}/reset-password`);
+  return request("POST", `/admin-users/${id}/reset-password`);
 }
 
 export default {

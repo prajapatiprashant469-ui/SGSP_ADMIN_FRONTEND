@@ -11,7 +11,7 @@ const InventoryLowStockPage = () => {
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(
-        "http://localhost:8080/api/admin/v1/inventory/low-stock-summary",
+        `${import.meta.env.VITE_BASE_URL}/inventory/low-stock-summary`,
         {
           method: "GET",
           headers: {
