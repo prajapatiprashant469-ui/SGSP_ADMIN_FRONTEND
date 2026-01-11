@@ -6,7 +6,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = async (email, password) => {
-    const response = await fetch("http://localhost:8080/api/admin/v1/auth/login", {
+    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
