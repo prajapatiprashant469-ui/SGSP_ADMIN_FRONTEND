@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 
@@ -8,16 +8,8 @@ const LoginPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (!loading && isAuthenticated) {
-      navigate("/dashboard");
-    }
-  }, [isAuthenticated, loading, navigate]);
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,14 +20,14 @@ const LoginPage = () => {
       return;
     }
 
-    setLoading(true);
+    setSubmitting(true);
     try {
       await login(email, password);
       navigate("/dashboard");
     } catch (err) {
       setError(err.message || "Invalid email or password");
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
@@ -43,6 +35,7 @@ const LoginPage = () => {
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
         <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
+
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
         <form onSubmit={handleSubmit}>
@@ -75,9 +68,9 @@ const LoginPage = () => {
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 px-4 rounded"
-            disabled={loading}
+            disabled={submitting}
           >
-            {loading ? "Logging in..." : "Login"}
+            {submitting ? "Logging in..." : "Login"}
           </button>
         </form>
       </div>
