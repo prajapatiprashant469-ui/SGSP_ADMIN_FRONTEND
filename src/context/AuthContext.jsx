@@ -3,17 +3,16 @@ import { createContext, useState } from "react";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("authToken")
+  );
 
-  // ✅ LOGIN — JSON BASED (matches backend)
   const login = async (email, password) => {
     const response = await fetch(
       `${import.meta.env.VITE_BASE_URL}/auth/login`,
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       }
     );
@@ -24,20 +23,20 @@ export const AuthProvider = ({ children }) => {
       throw new Error(result.error?.message || "Invalid email or password");
     }
 
-    // Don't save token anywhere
-    // const token = result.data?.token;
+    // ✅ SAVE TOKEN
+    const token = result.data.token;
+    localStorage.setItem("authToken", token);
 
     setIsAuthenticated(true);
   };
 
   const logout = () => {
+    localStorage.removeItem("authToken");
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider
-      value={{ login, logout, isAuthenticated }}
-    >
+    <AuthContext.Provider value={{ login, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );
