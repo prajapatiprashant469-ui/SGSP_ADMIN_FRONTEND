@@ -1,14 +1,20 @@
 const BASE_URL = `${import.meta.env.VITE_BASE_URL}`;
 
+function getAuthHeaders() {
+  const token = localStorage.getItem("authToken");
+  if (token && token !== "null") {
+    return { Authorization: `Bearer ${token}` };
+  }
+  return {};
+}
+
 export default {
   async getProducts(params) {
-    const token = localStorage.getItem("authToken");
     const query = new URLSearchParams(params).toString();
-
     const response = await fetch(`${BASE_URL}/products?${query}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        ...getAuthHeaders(),
       },
     });
 
@@ -16,21 +22,23 @@ export default {
 
     const json = await response.json();
 
-    // Flatten data
     return json.data.content.map((p) => ({
       ...p,
       categoryName: p.categoryName ?? p.categoryId,
       price: p.price ?? p.pricing?.price ?? 0,
-      stockQuantity: p.stockQuantity ?? p.inventory?.stockQuantity ?? 0
+      stockQuantity: p.stockQuantity ?? p.inventory?.stockQuantity ?? 0,
     }));
   },
 
   async getProductById(id) {
-    const token = localStorage.getItem("authToken");
-
     const res = await fetch(`${BASE_URL}/products/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+      },
     });
+
+    if (!res.ok) throw new Error("Failed to fetch product");
 
     const json = await res.json();
     const p = json.data;
@@ -40,34 +48,46 @@ export default {
       categoryName: p.categoryName ?? p.categoryId,
       price: p.price ?? p.pricing?.price ?? 0,
       stockQuantity: p.stockQuantity ?? p.inventory?.stockQuantity ?? 0,
-      workerAssigned: p.attributes.workerAssigned ?? null,
+      workerAssigned: p.attributes?.workerAssigned ?? null,
     };
   },
 
   async publishProduct(id) {
-    const token = localStorage.getItem("authToken");
-
-    return fetch(`${BASE_URL}/products/${id}/publish`, {
+    const res = await fetch(`${BASE_URL}/products/${id}/publish`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-    }).then((r) => r.json());
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+      },
+    });
+
+    if (!res.ok) throw new Error("Failed to publish product");
+    return res.json();
   },
 
   async unpublishProduct(id) {
-    const token = localStorage.getItem("authToken");
-
-    return fetch(`${BASE_URL}/products/${id}/unpublish`, {
+    const res = await fetch(`${BASE_URL}/products/${id}/unpublish`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-    }).then((r) => r.json());
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+      },
+    });
+
+    if (!res.ok) throw new Error("Failed to unpublish product");
+    return res.json();
   },
 
   async deleteProduct(id) {
-    const token = localStorage.getItem("authToken");
-
-    return fetch(`${BASE_URL}/products/${id}`, {
+    const res = await fetch(`${BASE_URL}/products/${id}`, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        "Content-Type": "application/json",
+        ...getAuthHeaders(),
+      },
     });
+
+    if (!res.ok) throw new Error("Failed to delete product");
+    return res.json();
   },
 };
