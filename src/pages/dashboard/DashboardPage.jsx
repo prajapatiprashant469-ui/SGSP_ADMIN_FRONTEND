@@ -16,7 +16,7 @@ const DashboardPage = () => {
   
       const token = localStorage.getItem("authToken");
   
-      fetch(`http://localhost:8080${url}`, {
+      fetch(`https://sgspadmin-production-prashant.up.railway.app${url}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((res) => res.blob())
