@@ -107,7 +107,7 @@ const InvoicePage = () => {
       },
     };
 
-    const res = await fetch("http://localhost:8080/api/invoice/generate", {
+    const res = await fetch("https://sgspadmin-production-prashant.up.railway.app/api/invoice/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/pdf" },
       body: JSON.stringify(payload),

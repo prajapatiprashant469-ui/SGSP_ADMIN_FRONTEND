@@ -12,7 +12,7 @@ const ProductDetailPage = () => {
   const fetchImageWithAuth = async (url) => {
     const token = localStorage.getItem("authToken");
   
-    const res = await fetch(`http://localhost:8080${url}`, {
+    const res = await fetch(`https://sgspadmin-production-prashant.up.railway.app${url}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
